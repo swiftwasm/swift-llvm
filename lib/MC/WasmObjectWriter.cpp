@@ -488,6 +488,9 @@ void WasmObjectWriter::recordRelocation(MCAssembler &Asm,
   FixedValue = 0;
 
   unsigned Type = getRelocType(Target, Fixup);
+  if (IsPCRel) {
+    return;
+  }
   assert(!IsPCRel);
   assert(SymA);
 
@@ -1442,6 +1445,10 @@ uint64_t WasmObjectWriter::writeObject(MCAssembler &Asm,
       WasmIndices[&WS] = WasmIndex;
       LLVM_DEBUG(dbgs() << "  -> index:" << WasmIndex << "\n");
     } else if (WS.isData()) {
+      // WebAssembly: hack
+      if (!(DataLocations.count(ResolvedSym) > 0)) {
+        continue;
+      }
       assert(DataLocations.count(ResolvedSym) > 0);
       const wasm::WasmDataReference &Ref =
           DataLocations.find(ResolvedSym)->second;
@@ -1479,6 +1486,9 @@ uint64_t WasmObjectWriter::writeObject(MCAssembler &Asm,
       assert(WasmIndices.count(&WS) > 0);
       Info.ElementIndex = WasmIndices.find(&WS)->second;
     } else if (WS.isDefined()) {
+      // WebAssembly: hack
+      if (!(DataLocations.count(&WS) > 0))
+        continue;
       assert(DataLocations.count(&WS) > 0);
       Info.DataRef = DataLocations.find(&WS)->second;
     }
