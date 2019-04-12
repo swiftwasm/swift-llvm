@@ -496,7 +496,6 @@ void WasmObjectWriter::recordRelocation(MCAssembler &Asm,
   // See: test/MC/WebAssembly/blockaddress.ll
   if (Type == wasm::R_WEBASSEMBLY_FUNCTION_OFFSET_I32 ||
       Type == wasm::R_WEBASSEMBLY_SECTION_OFFSET_I32) {
-    return;
     if (!FixupSection.getKind().isMetadata())
       report_fatal_error("relocations for function or section offsets are "
                          "only supported in metadata sections");
