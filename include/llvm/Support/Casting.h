@@ -238,21 +238,23 @@ template <class X, class Y>
 inline typename std::enable_if<!is_simple_type<Y>::value,
                                typename cast_retty<X, const Y>::ret_type>::type
 cast(const Y &Val) {
-  assert(isa<X>(Val) && "cast<Ty>() argument of incompatible type!");
+  // WebAssembly: hack
+  //assert(isa<X>(Val) && "cast<Ty>() argument of incompatible type!");
   return cast_convert_val<
       X, const Y, typename simplify_type<const Y>::SimpleType>::doit(Val);
 }
 
 template <class X, class Y>
 inline typename cast_retty<X, Y>::ret_type cast(Y &Val) {
-  assert(isa<X>(Val) && "cast<Ty>() argument of incompatible type!");
+  // WebAssembly: hack
+  //assert(isa<X>(Val) && "cast<Ty>() argument of incompatible type!");
   return cast_convert_val<X, Y,
                           typename simplify_type<Y>::SimpleType>::doit(Val);
 }
 
 template <class X, class Y>
 inline typename cast_retty<X, Y *>::ret_type cast(Y *Val) {
-  // WebAssembly hack hack hack
+  // WebAssembly: hack
   //assert(isa<X>(Val) && "cast<Ty>() argument of incompatible type!");
   return cast_convert_val<X, Y*,
                           typename simplify_type<Y*>::SimpleType>::doit(Val);
@@ -261,7 +263,8 @@ inline typename cast_retty<X, Y *>::ret_type cast(Y *Val) {
 template <class X, class Y>
 inline typename cast_retty<X, std::unique_ptr<Y>>::ret_type
 cast(std::unique_ptr<Y> &&Val) {
-  assert(isa<X>(Val.get()) && "cast<Ty>() argument of incompatible type!");
+  // WebAssembly: hack
+  //assert(isa<X>(Val.get()) && "cast<Ty>() argument of incompatible type!");
   using ret_type = typename cast_retty<X, std::unique_ptr<Y>>::ret_type;
   return ret_type(
       cast_convert_val<X, Y *, typename simplify_type<Y *>::SimpleType>::doit(
@@ -278,7 +281,8 @@ LLVM_NODISCARD inline
     cast_or_null(const Y &Val) {
   if (!Val)
     return nullptr;
-  assert(isa<X>(Val) && "cast_or_null<Ty>() argument of incompatible type!");
+  // WebAssembly: hack
+  //assert(isa<X>(Val) && "cast_or_null<Ty>() argument of incompatible type!");
   return cast<X>(Val);
 }
 
@@ -289,7 +293,8 @@ LLVM_NODISCARD inline
     cast_or_null(Y &Val) {
   if (!Val)
     return nullptr;
-  assert(isa<X>(Val) && "cast_or_null<Ty>() argument of incompatible type!");
+  // WebAssembly: hack
+  //assert(isa<X>(Val) && "cast_or_null<Ty>() argument of incompatible type!");
   return cast<X>(Val);
 }
 
@@ -297,7 +302,8 @@ template <class X, class Y>
 LLVM_NODISCARD inline typename cast_retty<X, Y *>::ret_type
 cast_or_null(Y *Val) {
   if (!Val) return nullptr;
-  assert(isa<X>(Val) && "cast_or_null<Ty>() argument of incompatible type!");
+  // WebAssembly: hack
+  //assert(isa<X>(Val) && "cast_or_null<Ty>() argument of incompatible type!");
   return cast<X>(Val);
 }
 
