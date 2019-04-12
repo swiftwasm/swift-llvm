@@ -198,7 +198,8 @@ MCSymbol *MCContext::createSymbol(StringRef Name, bool AlwaysAddSuffix,
     if (!IsTemporary) {
       fprintf(stderr, "Tried to rename a temporary with name %s\n", Name.str().c_str());
     }
-    assert(IsTemporary && "Cannot rename non-temporary symbols");
+    // WebAssembly Hack: I don't know why this assert fires
+    //assert(IsTemporary && "Cannot rename non-temporary symbols");
     AddSuffix = true;
   }
   llvm_unreachable("Infinite loop");

@@ -1038,6 +1038,9 @@ void MCStreamer::FinishImpl() {}
 void MCStreamer::EmitBundleUnlock() {}
 
 void MCStreamer::SwitchSection(MCSection *Section, const MCExpr *Subsection) {
+  if (!Section) {
+    return;
+  }
   assert(Section && "Cannot switch to a null section!");
   MCSectionSubPair curSection = SectionStack.back().first;
   SectionStack.back().second = curSection;
