@@ -195,9 +195,6 @@ MCSymbol *MCContext::createSymbol(StringRef Name, bool AlwaysAddSuffix,
       // embedded in the UsedNames entry.
       return createSymbolImpl(&*NameEntry.first, IsTemporary);
     }
-    if (!IsTemporary) {
-      fprintf(stderr, "Tried to rename a temporary with name %s\n", Name.str().c_str());
-    }
     // WebAssembly Hack: I don't know why this assert fires
     //assert(IsTemporary && "Cannot rename non-temporary symbols");
     AddSuffix = true;
